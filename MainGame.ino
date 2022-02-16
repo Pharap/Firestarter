@@ -8,8 +8,6 @@ Vector buildingLoc;
 
 void setup() {
   arduboy.begin();
-  arduboy.flashlight();
-  arduboy.setFrameRate(60);
   arduboy.clear();
   
   //Initialize things here
@@ -28,7 +26,7 @@ void loop() {
   arduboy.pollButtons();
   // Handle input
   handleInput();
-  Sprites::drawSelfMasked(buildingLoc.x, buildingLoc.y, building0, 0 );
+  Sprites::drawSelfMasked(buildingLoc.x - camera.x, buildingLoc.y - camera.y, building0, 0);
   debug();
   
   arduboy.display();
