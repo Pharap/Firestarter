@@ -1,4 +1,5 @@
 #include "MainGame.h"
+#include "TileType.h"
 #include "GameSprites.h"
 #include <Arduboy2.h>
 Arduboy2 arduboy;
@@ -8,9 +9,12 @@ Vector buildingLoc;
 
 const uint8_t world_width = 256;
 const uint8_t world_height = 256;
+const uint8_t mapHeight = 9;
+const uint8_t mapWidth = 9;
 
 // A 2D array of tile types/tile indices
 uint8_t world[world_height][world_width] { /* Fill the map data in as necessary */ };
+TileType tileMap[mapHeight][mapWidth] {};
 
 void setup() {
   arduboy.begin();
@@ -18,6 +22,7 @@ void setup() {
   arduboy.initRandomSeed();
   uint8_t tileType = random (0,3);
   //Initialize things here
+  generateMap();
 }
 
 uint8_t frame = 0;
@@ -33,9 +38,9 @@ void loop() {
   arduboy.pollButtons();
   // Handle input
   handleInput();
-  drawMap();
   //Sprites::drawSelfMasked(buildingLoc.x - camera.x, buildingLoc.y - camera.y, buildingPlaceholders, tileType);
   debug();
+  drawMap();
   
   arduboy.display();
 }
@@ -71,6 +76,13 @@ void handleInput()
 
       //update player
   }
+}
+
+void generateMap()
+{
+  for(uint8_t tileY = 0; tileY < world_height; ++tileY)
+    for(uint8_t tileX = 0; tileX < world_width; ++tileX)
+      tileMap[tileY][tileX] = static_cast<TileType>(random() % 4);
 }
 
 void drawMap()
