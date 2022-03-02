@@ -18,13 +18,13 @@ const uint8_t screen_width = 128;
 const uint8_t viewport_center_height = screen_height / 2;
 const uint8_t viewport_center_width = screen_width / 2;
 
-const uint8_t world_width = 256;
-const uint8_t world_height = 256;
+const uint8_t world_width = 255;
+const uint8_t world_height = 255;
 const uint8_t mapHeight = 9;
 const uint8_t mapWidth = 9;
 
 // A 2D array of tile types/tile indices
-uint8_t world[world_height][world_width] { /* Fill the map data in as necessary */ };
+//uint8_t world[world_height][world_width] { /* Fill the map data in as necessary */ };
 TileType tileMap[mapHeight][mapWidth] {};
 
 //World array?
@@ -33,8 +33,8 @@ TileType tileMap[mapHeight][mapWidth] {};
 
 void generateMap()
 {
-  for(uint8_t tileY = 0; tileY < world_height; ++tileY)
-    for(uint8_t tileX = 0; tileX < world_width; ++tileX)
+  for(uint16_t tileY = 0; tileY < world_height; ++tileY)
+    for(uint16_t tileX = 0; tileX < world_width; ++tileX)
       tileMap[tileY][tileX] = static_cast<TileType>(random() % 4);
 }
 
@@ -50,13 +50,13 @@ void drawMap()
       // Calculate the x position to draw the tile at, 6 is tile width:
       int16_t drawX = ((x * 6) - camera.x);
       
-      uint8_t tileType = world[y][x];
+      //uint8_t tileType = world[y][x];
       
       // Assuming that your tile types are the same as
       // the frames used in your tilesheet. Otherwise
       // you'll need a way to determine the sprite index
       // from the tile type.
-      Sprites::drawOverwrite(drawX, drawY, buildingPlaceholders, tileType);
+      Sprites::drawOverwrite(drawX, drawY, buildingPlaceholders, tileMap);
     }
   }
 }
