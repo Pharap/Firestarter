@@ -31,11 +31,21 @@ TileType tileMap[mapHeight][mapWidth] {};
 
 //Coordinates to isomentric?
 
+// Generates a random map by filling the map with random tiles,
+// moving from left to right, top to bottom.
 void generateMap()
 {
+  // Top to bottom
   for(uint16_t tileY = 0; tileY < mapHeight; ++tileY)
+  {
+    // Left to right
     for(uint16_t tileX = 0; tileX < mapWidth; ++tileX)
-      tileMap[tileY][tileX] = static_cast<TileType>(random() % 4);
+    {
+      // Create a tile value from a random number
+      // and assign it to a tile in the tile map.
+      tileMap[tileY][tileX] = fromTileIndex(random());
+    }
+  }
 }
 
 void drawMap()
