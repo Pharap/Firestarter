@@ -47,12 +47,15 @@ void drawMap()
     {
       // Calculate the x position to draw the tile at, 6 is tile width:
       int16_t drawX = ((x * 6) - camera.x);
-            
-      // Assuming that your tile types are the same as
-      // the frames used in your tilesheet. Otherwise
-      // you'll need a way to determine the sprite index
-      // from the tile type.
-      Sprites::drawOverwrite(drawX, drawY, buildingPlaceholders, tileMap[y][x]);
+
+      // Read the tile from the map.
+      TileType tileType = tileMap[y][x];
+
+      // Figure out the tile index.
+      uint8_t tileIndex = toTileIndex(tileType);
+
+      // Draw the tile at the calculated position.
+      Sprites::drawOverwrite(drawX, drawY, buildingPlaceholders, tileIndex);
     }
   }
 }
