@@ -13,8 +13,8 @@ class Vector {
 Vector camera;
 
 // The dimensions of the screen
-constexpr uint8_t screen_height = 64;
-constexpr uint8_t screen_width = 128;
+constexpr uint8_t screen_height = HEIGHT;
+constexpr uint8_t screen_width = WIDTH;
 
 // The centre coordinates of the screen
 constexpr uint8_t viewport_center_height = screen_height / 2;
