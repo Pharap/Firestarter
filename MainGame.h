@@ -9,20 +9,22 @@ class Vector {
     float y = 0;
 };
 
+// The game camera, represented by the camera's top left coordinates
 Vector camera;
 
-//Appropriate data types?
+// The dimensions of the screen
 const uint8_t screen_height = 64;
 const uint8_t screen_width = 128;
 
+// The centre coordinates of the screen
 const uint8_t viewport_center_height = screen_height / 2;
 const uint8_t viewport_center_width = screen_width / 2;
 
+// The dimensions of the map
 const uint8_t mapHeight = 32;
 const uint8_t mapWidth = 32;
 
-// A 2D array of tile types/tile indices
-//uint8_t world[world_height][world_width] { /* Fill the map data in as necessary */ };
+// A 2D array of tiles, represented with 'TileType'
 TileType tileMap[mapHeight][mapWidth] {};
 
 //World array?
