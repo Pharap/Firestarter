@@ -13,16 +13,16 @@ class Vector {
 Vector camera;
 
 // The dimensions of the screen
-const uint8_t screen_height = 64;
-const uint8_t screen_width = 128;
+constexpr uint8_t screen_height = 64;
+constexpr uint8_t screen_width = 128;
 
 // The centre coordinates of the screen
-const uint8_t viewport_center_height = screen_height / 2;
-const uint8_t viewport_center_width = screen_width / 2;
+constexpr uint8_t viewport_center_height = screen_height / 2;
+constexpr uint8_t viewport_center_width = screen_width / 2;
 
 // The dimensions of the map
-const uint8_t mapHeight = 32;
-const uint8_t mapWidth = 32;
+constexpr uint8_t mapHeight = 32;
+constexpr uint8_t mapWidth = 32;
 
 // A 2D array of tiles, represented with 'TileType'
 TileType tileMap[mapHeight][mapWidth] {};
