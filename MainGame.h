@@ -9,31 +9,43 @@ class Vector {
     float y = 0;
 };
 
+// The game camera, represented by the camera's top left coordinates
 Vector camera;
 
-//Appropriate data types?
-const uint8_t screen_height = 64;
-const uint8_t screen_width = 128;
+// The dimensions of the screen
+constexpr uint8_t screen_height = HEIGHT;
+constexpr uint8_t screen_width = WIDTH;
 
-const uint8_t viewport_center_height = screen_height / 2;
-const uint8_t viewport_center_width = screen_width / 2;
+// The centre coordinates of the screen
+constexpr uint8_t viewport_center_height = screen_height / 2;
+constexpr uint8_t viewport_center_width = screen_width / 2;
 
-const uint8_t mapHeight = 32;
-const uint8_t mapWidth = 32;
+// The dimensions of the map
+constexpr uint8_t mapHeight = 32;
+constexpr uint8_t mapWidth = 32;
 
-// A 2D array of tile types/tile indices
-//uint8_t world[world_height][world_width] { /* Fill the map data in as necessary */ };
+// A 2D array of tiles, represented with 'TileType'
 TileType tileMap[mapHeight][mapWidth] {};
 
 //World array?
 
 //Coordinates to isomentric?
 
+// Generates a random map by filling the map with random tiles,
+// moving from left to right, top to bottom.
 void generateMap()
 {
+  // Top to bottom
   for(uint16_t tileY = 0; tileY < mapHeight; ++tileY)
+  {
+    // Left to right
     for(uint16_t tileX = 0; tileX < mapWidth; ++tileX)
-      tileMap[tileY][tileX] = static_cast<TileType>(random() % 4);
+    {
+      // Create a tile value from a random number
+      // and assign it to a tile in the tile map.
+      tileMap[tileY][tileX] = fromTileIndex(random());
+    }
+  }
 }
 
 void drawMap()
@@ -47,12 +59,15 @@ void drawMap()
     {
       // Calculate the x position to draw the tile at, 6 is tile width:
       int16_t drawX = ((x * 6) - camera.x);
-            
-      // Assuming that your tile types are the same as
-      // the frames used in your tilesheet. Otherwise
-      // you'll need a way to determine the sprite index
-      // from the tile type.
-      Sprites::drawOverwrite(drawX, drawY, buildingPlaceholders, tileMap[y][x]);
+
+      // Read the tile from the map.
+      TileType tileType = tileMap[y][x];
+
+      // Figure out the tile index.
+      uint8_t tileIndex = toTileIndex(tileType);
+
+      // Draw the tile at the calculated position.
+      Sprites::drawOverwrite(drawX, drawY, buildingPlaceholders, tileIndex);
     }
   }
 }
