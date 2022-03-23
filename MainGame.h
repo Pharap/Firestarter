@@ -3,6 +3,11 @@
 Arduboy2 arduboy;
 #include "GameSprites.h"
 
+//Changes to make:
+//-create pause function on B button press and call drawMap function in it
+//-create functions toIso and toCart to go to and from Isometric/Cartesian
+//-draw new map tiles using toIso (and probably an enum due to how theyre stored in memory?)
+
 class Vector {
   public:
     float x = 0;
@@ -26,10 +31,6 @@ constexpr uint8_t mapWidth = 32;
 
 // A 2D array of tiles, represented with 'TileType'
 TileType tileMap[mapHeight][mapWidth] {};
-
-//World array?
-
-//Coordinates to isomentric?
 
 // Generates a random map by filling the map with random tiles,
 // moving from left to right, top to bottom.
@@ -71,3 +72,13 @@ void drawMap()
     }
   }
 }
+
+//Cartesian to isometric:
+
+//isoX = cartX - cartY;
+//isoY = (cartX + cartY) / 2;
+
+//Isometric to cartesian
+
+//cartX = (2 * isoY + isoX) / 2;
+//cartY = (2 * isoY - isoX) / 2;

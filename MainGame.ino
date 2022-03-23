@@ -6,7 +6,6 @@ void setup() {
   arduboy.begin();
   arduboy.clear();
   arduboy.initRandomSeed();
-  //uint8_t tileType = random (0,3);
   //Initialize things here
   generateMap();
 }
@@ -24,10 +23,9 @@ void loop() {
   arduboy.pollButtons();
   // Handle input
   handleInput();
-  //Sprites::drawSelfMasked(buildingLoc.x - camera.x, buildingLoc.y - camera.y, buildingPlaceholders, tileType);
-  debug();
   drawMap();
-  
+  debug();
+
   arduboy.display();
 }
 
