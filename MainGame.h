@@ -32,6 +32,30 @@ constexpr uint8_t mapWidth = 32;
 // A 2D array of tiles, represented with 'TileType'
 TileType tileMap[mapHeight][mapWidth] {};
 
+
+
+//Create timer
+unsigned long currentMillis = 0;
+unsigned long previousMillis = 0;
+
+unsigned long getElapsedTime()
+{
+  return (currentMillis - previousMillis);
+}
+
+void updatePreviousTime()
+{
+  previousMillis = currentMillis;
+} 
+
+void updateCurrentTime()
+{
+  currentMillis = millis();
+}
+
+
+   
+
 // Generates a random map by filling the map with random tiles,
 // moving from left to right, top to bottom.
 void generateMap()
