@@ -25,6 +25,10 @@ constexpr uint8_t screen_width = WIDTH;
 constexpr uint8_t viewport_center_height = screen_height / 2;
 constexpr uint8_t viewport_center_width = screen_width / 2;
 
+// The dimensions of the tiles
+constexpr uint8_t tileWidth = 38;
+constexpr uint8_t tileHeight = 36;
+
 // The dimensions of the map
 constexpr uint8_t mapHeight = 32;
 constexpr uint8_t mapWidth = 32;
@@ -116,12 +120,12 @@ void drawIsoMap()
   for(uint8_t y = 0; y < mapHeight; ++y)
   {
     // Calculate the y position to draw the tile at, 6 is tile height
-    int16_t drawY = ((y * 36) - camera.y);
+    int16_t drawY = ((y * tileHeight) - camera.y);
 
     for(uint8_t x = 0; x < mapWidth; ++x)
     {
       // Calculate the x position to draw the tile at, 6 is tile width:
-      int16_t drawX = ((x * 38) - camera.x);
+      int16_t drawX = ((x * tileWidth) - camera.x);
       // int16_t drawIsoX = drawX - drawY;
       // int16_t drawIsoY = (drawX + drawY) / 2;
 
