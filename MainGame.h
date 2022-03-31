@@ -3,10 +3,10 @@
 Arduboy2 arduboy;
 #include "GameSprites.h"
 
-//Changes to make:
-//-create pause function on B button press and call drawMap function in it
-//-create functions toIso and toCart to go to and from Isometric/Cartesian
-//-draw new map tiles using toIso (and probably an enum due to how theyre stored in memory?)
+// Changes to make:
+// - Create pause function on B button press and call drawMap function in it
+// - Create functions toIso and toCart to go to and from Isometric/Cartesian
+// - Draw new map tiles using toIso (and probably an enum due to how theyre stored in memory?)
 
 class Vector {
   public:
@@ -33,8 +33,6 @@ constexpr uint8_t mapWidth = 32;
 TileType tileMap[mapHeight][mapWidth] {};
 TileType tileIsoMap[mapHeight][mapWidth] {};
 
-
-
 //Create timer
 unsigned long currentMillis = 0;
 unsigned long previousMillis = 0;
@@ -54,12 +52,9 @@ void updateCurrentTime()
   currentMillis = millis();
 }
 
-
-   
-
 // Generates a random map by filling the map with random tiles,
 // moving from left to right, top to bottom.
-//Called in setup
+// Called in setup
 void generateMap()
 {
   // Top to bottom
@@ -99,7 +94,7 @@ void drawMiniMap()
   }
 }
   
-//Isometric map tiles
+// Isometric map tiles
 constexpr uint8_t const * buildings[]
 {
   building0,
@@ -108,23 +103,16 @@ constexpr uint8_t const * buildings[]
   building3,
 };
 
+// Isometric to cartesian:
+// isoX = cartX - cartY;
+// isoY = (cartX + cartY) / 2;
+
+// Cartesian to Isometric:
+// cartX = (2 * isoY + isoX) / 2;
+// cartY = (2 * isoY - isoX) / 2;
+
 void drawIsoMap()
 {
-  /*
-  isoX = cartX - cartY;
-  isoY = (cartX + cartY) / 2;
-  
-  Isometric to cartesian
-  
-  cartX = (2 * isoY + isoX) / 2;
-  cartY = (2 * isoY - isoX) / 2;
-
-  Cartesian to Isometric
-  */
-
-  //int16_t drawIsoX = drawX - drawY;
-  //int16_t drawIsoY = (drawX + drawY) / 2;
-
   for(uint8_t y = 0; y < mapHeight; ++y)
   {
     // Calculate the y position to draw the tile at, 6 is tile height
@@ -136,17 +124,6 @@ void drawIsoMap()
       int16_t drawX = ((x * 6) - camera.x);
       int16_t drawIsoX = drawX - drawY;
       int16_t drawIsoY = (drawX + drawY) / 2;
-
-      /*
-      // Read the tile from the map.
-      TileType tileType = tileMap[y][x];
-
-      // Figure out the tile index.
-      uint8_t tileIndex = toTileIndex(tileType);
-
-      // Draw the tile at the calculated position.
-      Sprites::drawOverwrite(x, y, buildings, tileIndex);
-      */
 
       // Read the tile from the map.
     TileType tileType = tileMap[y][x];
