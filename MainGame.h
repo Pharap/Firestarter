@@ -35,7 +35,6 @@ constexpr uint8_t mapWidth = 32;
 
 // A 2D array of tiles, represented with 'TileType'
 TileType tileMap[mapHeight][mapWidth] {};
-TileType tileIsoMap[mapHeight][mapWidth] {};
 
 //Create timer
 unsigned long currentMillis = 0;
