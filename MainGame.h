@@ -126,16 +126,16 @@ void drawIsoMap()
       int16_t drawIsoY = (drawX + drawY) / 2;
 
       // Read the tile from the map.
-    TileType tileType = tileMap[y][x];
-    
-    // Figure out the tile index.
-    uint8_t tileIndex = toTileIndex(tileType);
-    
-    // Select the building sprite
-    const uint8_t * buildingSprite = buildings[tileIndex];
-    
-    // Draw the tile at the calculated position.
-    Sprites::drawOverwrite(drawIsoX, drawIsoY, buildingSprite, 0);
+      TileType tileType = tileMap[y][x];
+      
+      // Figure out the tile index.
+      uint8_t tileIndex = toTileIndex(tileType);
+      
+      // Select the building sprite
+      const uint8_t * buildingSprite = buildings[tileIndex];
+      
+      // Draw the tile at the calculated position.
+      Sprites::drawOverwrite(drawIsoX, drawIsoY, buildingSprite, 0);
     }
   }
 }
