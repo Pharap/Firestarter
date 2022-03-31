@@ -28,9 +28,11 @@ void loop() {
   
   if (isMinimapVisible == true)
   {
-    drawMap();
+    drawMiniMap();
   }
-  
+
+  drawIsoMap();
+   
   debug();
   arduboy.display();
 }
@@ -71,44 +73,6 @@ void handleInput()
     isMinimapVisible = !isMinimapVisible;
   }
 }
-
-  /*
-  if(arduboy.justPressed(B_BUTTON) && isMinimapVisible == false)
-  {
-    isMinimapVisible = true;
-  }
-
-  if(arduboy.justPressed(B_BUTTON) && isMinimapVisible == true)
-  {
-    isMinimapVisible = false;
-  }
-  */
-  
-  /*if (isMinimapVisible != true)
-  {
-    //draw isometric
-    if(arduboy.justPressed(B_BUTTON))
-    //if(arduboy.pressed(B_BUTTON))
-    //if(!arduboy.justPressed(B_BUTTON) && arduboy.pressed(B_BUTTON))
-    //if(arduboy.pressed(B_BUTTON) && !arduboy.justPressed(B_BUTTON))
-    {
-      isMinimapVisible = true;
-    }
-  }
-  else
-  {
-    //draw mini map
-    drawMap();   
-    if(arduboy.justPressed(B_BUTTON))
-    //if(arduboy.pressed(B_BUTTON))
-    //if(!arduboy.justPressed(B_BUTTON) && arduboy.pressed(B_BUTTON))
-    //if(arduboy.pressed(B_BUTTON) && !arduboy.justPressed(B_BUTTON))
-    {
-      isMinimapVisible = false;
-    }
-  }
-}*/
-
 
 
 void debug()
