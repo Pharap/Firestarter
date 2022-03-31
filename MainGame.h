@@ -116,12 +116,12 @@ void drawIsoMap()
   for(uint8_t y = 0; y < mapHeight; ++y)
   {
     // Calculate the y position to draw the tile at, 6 is tile height
-    int16_t drawY = ((y * 6) - camera.y);
+    int16_t drawY = ((y * 36) - camera.y);
 
     for(uint8_t x = 0; x < mapWidth; ++x)
     {
       // Calculate the x position to draw the tile at, 6 is tile width:
-      int16_t drawX = ((x * 6) - camera.x);
+      int16_t drawX = ((x * 38) - camera.x);
       // int16_t drawIsoX = drawX - drawY;
       // int16_t drawIsoY = (drawX + drawY) / 2;
 
