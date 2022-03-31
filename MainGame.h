@@ -122,8 +122,8 @@ void drawIsoMap()
     {
       // Calculate the x position to draw the tile at, 6 is tile width:
       int16_t drawX = ((x * 6) - camera.x);
-      int16_t drawIsoX = drawX - drawY;
-      int16_t drawIsoY = (drawX + drawY) / 2;
+      // int16_t drawIsoX = drawX - drawY;
+      // int16_t drawIsoY = (drawX + drawY) / 2;
 
       // Read the tile from the map.
       TileType tileType = tileMap[y][x];
@@ -135,7 +135,7 @@ void drawIsoMap()
       const uint8_t * buildingSprite = buildings[tileIndex];
       
       // Draw the tile at the calculated position.
-      Sprites::drawOverwrite(drawIsoX, drawIsoY, buildingSprite, 0);
+      Sprites::drawOverwrite(drawX, drawY, buildingSprite, 0);
     }
   }
 }
