@@ -26,8 +26,8 @@ constexpr uint8_t viewport_center_height = screen_height / 2;
 constexpr uint8_t viewport_center_width = screen_width / 2;
 
 // The dimensions of the tiles
-constexpr uint8_t tileWidth = 19;
-constexpr uint8_t tileHeight = 18;
+//constexpr uint8_t tileWidth = 19;
+//constexpr uint8_t tileHeight = 18;
 
 // The dimensions of the map
 constexpr uint8_t mapHeight = 32;
@@ -35,6 +35,36 @@ constexpr uint8_t mapWidth = 32;
 
 // A 2D array of tiles, represented with 'TileType'
 TileType tileMap[mapHeight][mapWidth] {};
+
+
+
+//uint8_t tileHeight = pgm_read_byte(&buildingSprite[1]);
+//uint8_t tileWidth = pgm_read_byte(&buildingSprite[0]);
+
+//Though it would be better to introduce a named function so you don’t forget what this code actually does:
+
+inline uint8_t getSpriteHeight(const uint8_t * sprite)
+{
+  return pgm_read_byte(&sprite[1]);
+}
+
+inline uint8_t getSpriteWidth(const uint8_t * sprite)
+{
+  return pgm_read_byte(&sprite[0]);
+}
+
+//And thus:
+
+//uint8_t tileHeight = getSpriteHeight(buildingSprite);
+//uint8_t tileWidth = getSpriteWidth(buildingSprite);
+
+//From which you could then adjust drawY to draw your buildings at the appropriate position.
+//(I’m going to let you figure out how to do the adjustment, purely to give you chance to check your understanding of how the isometric rendering works.)
+
+
+  
+
+
 
 /*
 //Create timer
@@ -122,12 +152,12 @@ void drawIsoMap()
   for(uint8_t y = 0; y < mapHeight; ++y)
   {
     // Calculate the y position to draw the tile at, 6 is tile height
-    int16_t drawY = ((y * tileHeight) - camera.y);
+    int16_t drawY = ((y * 18) - camera.y);
 
     for(uint8_t x = 0; x < mapWidth; ++x)
     {
       // Calculate the x position to draw the tile at, 6 is tile width:
-      int16_t drawX = ((x * tileWidth) - camera.x);
+      int16_t drawX = ((x * 19) - camera.x);
       // int16_t drawIsoX = drawX - drawY;
       // int16_t drawIsoY = (drawX + drawY) / 2;
 
@@ -147,12 +177,26 @@ void drawIsoMap()
 }
 */
 
+
 void drawIsoMap()
 {
   for(uint8_t tileY = 0; tileY < mapHeight; ++tileY)
   {
     for(uint8_t tileX = 0; tileX < mapWidth; ++tileX)
     {
+
+
+      // Read the tile from the map.
+      TileType tileType = tileMap[tileY][tileX];
+
+      // Figure out the tile index.
+      uint8_t tileIndex = toTileIndex(tileType);
+
+      const uint8_t * buildingSprite = buildings[tileIndex];
+
+      uint8_t tileHeight = getSpriteHeight(buildingSprite);
+      uint8_t tileWidth = getSpriteWidth(buildingSprite);
+
       // Calculate the x position to draw the tile at.
       const int16_t isometricX = (((tileX * tileWidth) / 2) - ((tileY * tileWidth) / 2));
       const int16_t drawX = (isometricX - camera.x);
@@ -163,14 +207,8 @@ void drawIsoMap()
       
       // TODO: Skip off-screen tiles
 
-      // Read the tile from the map.
-      TileType tileType = tileMap[tileY][tileX];
-
-      // Figure out the tile index.
-      uint8_t tileIndex = toTileIndex(tileType);
-
-      const uint8_t * buildingSprite = buildings[tileIndex];
-
+      //const uint8_t * buildingSprite = buildings[tileIndex];
+     
       // Draw the tile at the calculated position.
       //Sprites::drawExternalMask(drawX, drawY, tileSheet, tileSheetMask, tileIndex, tileIndex);
       Sprites::drawOverwrite(drawX, drawY, buildingSprite, 0);
