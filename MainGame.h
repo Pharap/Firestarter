@@ -26,8 +26,8 @@ constexpr uint8_t viewport_center_height = screen_height / 2;
 constexpr uint8_t viewport_center_width = screen_width / 2;
 
 // The dimensions of the tiles
-constexpr uint8_t tileWidth = 38;
-constexpr uint8_t tileHeight = 36;
+constexpr uint8_t tileWidth = 19;
+constexpr uint8_t tileHeight = 18;
 
 // The dimensions of the map
 constexpr uint8_t mapHeight = 32;
@@ -36,6 +36,7 @@ constexpr uint8_t mapWidth = 32;
 // A 2D array of tiles, represented with 'TileType'
 TileType tileMap[mapHeight][mapWidth] {};
 
+/*
 //Create timer
 unsigned long currentMillis = 0;
 unsigned long previousMillis = 0;
@@ -54,6 +55,7 @@ void updateCurrentTime()
 {
   currentMillis = millis();
 }
+*/
 
 // Generates a random map by filling the map with random tiles,
 // moving from left to right, top to bottom.
@@ -114,6 +116,7 @@ constexpr uint8_t const * buildings[]
 // cartX = (2 * isoY + isoX) / 2;
 // cartY = (2 * isoY - isoX) / 2;
 
+/*
 void drawIsoMap()
 {
   for(uint8_t y = 0; y < mapHeight; ++y)
@@ -138,6 +141,38 @@ void drawIsoMap()
       const uint8_t * buildingSprite = buildings[tileIndex];
       
       // Draw the tile at the calculated position.
+      Sprites::drawOverwrite(drawX, drawY, buildingSprite, 0);
+    }
+  }
+}
+*/
+
+void drawIsoMap()
+{
+  for(uint8_t tileY = 0; tileY < mapHeight; ++tileY)
+  {
+    for(uint8_t tileX = 0; tileX < mapWidth; ++tileX)
+    {
+      // Calculate the x position to draw the tile at.
+      const int16_t isometricX = (((tileX * tileWidth) / 2) - ((tileY * tileWidth) / 2));
+      const int16_t drawX = (isometricX - camera.x);
+      
+      // Calculate the y position to draw the tile at.
+      const int16_t isometricY = (((tileX * tileHeight) / 2) + ((tileY * tileHeight) / 2));
+      const int16_t drawY = (isometricY - camera.y);
+      
+      // TODO: Skip off-screen tiles
+
+      // Read the tile from the map.
+      TileType tileType = tileMap[tileY][tileX];
+
+      // Figure out the tile index.
+      uint8_t tileIndex = toTileIndex(tileType);
+
+      const uint8_t * buildingSprite = buildings[tileIndex];
+
+      // Draw the tile at the calculated position.
+      //Sprites::drawExternalMask(drawX, drawY, tileSheet, tileSheetMask, tileIndex, tileIndex);
       Sprites::drawOverwrite(drawX, drawY, buildingSprite, 0);
     }
   }

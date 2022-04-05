@@ -31,7 +31,10 @@ void loop() {
     drawMiniMap();
   }
 
-  drawIsoMap();
+  else
+  {
+    drawIsoMap();
+  }
    
   debug();
   arduboy.display();
