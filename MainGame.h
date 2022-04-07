@@ -26,8 +26,10 @@ constexpr uint8_t viewport_center_height = screen_height / 2;
 constexpr uint8_t viewport_center_width = screen_width / 2;
 
 // The dimensions of the tiles
-//constexpr uint8_t tileWidth = 19;
-//constexpr uint8_t tileHeight = 18;
+constexpr uint8_t tileWidth = 18;
+constexpr uint8_t tileHeight = 19;
+//uint8_t tileWidth;
+//uint8_t tileHeight;
 
 // The dimensions of the map
 constexpr uint8_t mapHeight = 32;
@@ -63,6 +65,23 @@ inline uint8_t getSpriteWidth(const uint8_t * sprite)
 
 
   
+/*
+im thinking i should change my tileWidth and tileHeight back (since i shouldn’t have replaced them lol) 
+then use my getSpriteWidth/Height functions to return the actual size of my sprites and try to use them in figuring out my height adjustment…
+-----
+Yes. This is correct.
+Now all that remains is to figure out how to adjust the height.
+You might actually find it easier to work out if you fixed your images’ masks first so the transparent parts are actually transparent.
+
+
+ */
+
+
+
+
+
+
+
 
 
 
@@ -130,7 +149,7 @@ void drawMiniMap()
 }
   
 // Isometric map tiles
-constexpr uint8_t const * buildings[]
+constexpr uint8_t const * buildingSprites[]
 {
   building0,
   building1,
@@ -138,6 +157,13 @@ constexpr uint8_t const * buildings[]
   building3,
 };
 
+constexpr uint8_t const * buildingMasks[]
+{
+  building0_mask,
+  building1_mask,
+  building2_mask,
+  building3_mask,
+};
 // Isometric to cartesian:
 // isoX = cartX - cartY;
 // isoY = (cartX + cartY) / 2;
@@ -168,7 +194,7 @@ void drawIsoMap()
       uint8_t tileIndex = toTileIndex(tileType);
       
       // Select the building sprite
-      const uint8_t * buildingSprite = buildings[tileIndex];
+      const uint8_t * buildingSprite = buildingSprites[tileIndex];
       
       // Draw the tile at the calculated position.
       Sprites::drawOverwrite(drawX, drawY, buildingSprite, 0);
@@ -184,7 +210,15 @@ void drawIsoMap()
   {
     for(uint8_t tileX = 0; tileX < mapWidth; ++tileX)
     {
+      // Calculate the x position to draw the tile at.
+      const int16_t isometricX = (((tileX * tileWidth) / 2) - ((tileY * tileWidth) / 2));
+      const int16_t drawX = (isometricX - camera.x);
 
+      // Calculate the y position to draw the tile at.
+      const int16_t isometricY = (((tileX * tileHeight) / 2) + ((tileY * tileHeight) / 2));
+      const int16_t drawY = (isometricY - camera.y);
+
+      // TODO: Skip off-screen tiles
 
       // Read the tile from the map.
       TileType tileType = tileMap[tileY][tileX];
@@ -192,26 +226,15 @@ void drawIsoMap()
       // Figure out the tile index.
       uint8_t tileIndex = toTileIndex(tileType);
 
-      const uint8_t * buildingSprite = buildings[tileIndex];
+      const uint8_t * buildingSprite = buildingSprites[tileIndex];
+      const uint8_t * buildingMask = buildingMasks[tileIndex];
 
-      uint8_t tileHeight = getSpriteHeight(buildingSprite);
-      uint8_t tileWidth = getSpriteWidth(buildingSprite);
+      uint8_t thisTileHeight = getSpriteHeight(buildingSprite);
 
-      // Calculate the x position to draw the tile at.
-      const int16_t isometricX = (((tileX * tileWidth) / 2) - ((tileY * tileWidth) / 2));
-      const int16_t drawX = (isometricX - camera.x);
-      
-      // Calculate the y position to draw the tile at.
-      const int16_t isometricY = (((tileX * tileHeight) / 2) + ((tileY * tileHeight) / 2));
-      const int16_t drawY = (isometricY - camera.y);
-      
-      // TODO: Skip off-screen tiles
-
-      //const uint8_t * buildingSprite = buildings[tileIndex];
-     
       // Draw the tile at the calculated position.
-      //Sprites::drawExternalMask(drawX, drawY, tileSheet, tileSheetMask, tileIndex, tileIndex);
-      Sprites::drawOverwrite(drawX, drawY, buildingSprite, 0);
+      Sprites::drawExternalMask(drawX, drawY, buildingSprite, buildingMask, tileIndex, tileIndex);
+      //Sprites::drawOverwrite(drawX, drawY - (thisTileHeight - tileHeight), buildingSprite, 0);
+      //Sprites::drawSelfMasked(drawX, drawY - (thisTileHeight - tileHeight), buildingSprite, 0);
     }
   }
 }
