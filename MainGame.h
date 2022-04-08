@@ -28,8 +28,6 @@ constexpr uint8_t viewport_center_width = screen_width / 2;
 // The dimensions of the tiles
 constexpr uint8_t tileWidth = 18;
 constexpr uint8_t tileHeight = 19;
-//uint8_t tileWidth;
-//uint8_t tileHeight;
 
 // The dimensions of the map
 constexpr uint8_t mapHeight = 32;
@@ -38,12 +36,7 @@ constexpr uint8_t mapWidth = 32;
 // A 2D array of tiles, represented with 'TileType'
 TileType tileMap[mapHeight][mapWidth] {};
 
-
-
-//uint8_t tileHeight = pgm_read_byte(&buildingSprite[1]);
-//uint8_t tileWidth = pgm_read_byte(&buildingSprite[0]);
-
-//Though it would be better to introduce a named function so you don’t forget what this code actually does:
+// Though it would be better to introduce a named function so you don’t forget what this code actually does:
 
 inline uint8_t getSpriteHeight(const uint8_t * sprite)
 {
@@ -164,6 +157,7 @@ constexpr uint8_t const * buildingMasks[]
   building2_mask,
   building3_mask,
 };
+
 // Isometric to cartesian:
 // isoX = cartX - cartY;
 // isoY = (cartX + cartY) / 2;
@@ -171,38 +165,6 @@ constexpr uint8_t const * buildingMasks[]
 // Cartesian to Isometric:
 // cartX = (2 * isoY + isoX) / 2;
 // cartY = (2 * isoY - isoX) / 2;
-
-/*
-void drawIsoMap()
-{
-  for(uint8_t y = 0; y < mapHeight; ++y)
-  {
-    // Calculate the y position to draw the tile at, 6 is tile height
-    int16_t drawY = ((y * 18) - camera.y);
-
-    for(uint8_t x = 0; x < mapWidth; ++x)
-    {
-      // Calculate the x position to draw the tile at, 6 is tile width:
-      int16_t drawX = ((x * 19) - camera.x);
-      // int16_t drawIsoX = drawX - drawY;
-      // int16_t drawIsoY = (drawX + drawY) / 2;
-
-      // Read the tile from the map.
-      TileType tileType = tileMap[y][x];
-      
-      // Figure out the tile index.
-      uint8_t tileIndex = toTileIndex(tileType);
-      
-      // Select the building sprite
-      const uint8_t * buildingSprite = buildingSprites[tileIndex];
-      
-      // Draw the tile at the calculated position.
-      Sprites::drawOverwrite(drawX, drawY, buildingSprite, 0);
-    }
-  }
-}
-*/
-
 
 void drawIsoMap()
 {
@@ -221,20 +183,25 @@ void drawIsoMap()
       // TODO: Skip off-screen tiles
 
       // Read the tile from the map.
-      TileType tileType = tileMap[tileY][tileX];
+      const TileType tileType = tileMap[tileY][tileX];
 
       // Figure out the tile index.
-      uint8_t tileIndex = toTileIndex(tileType);
+      const uint8_t tileIndex = toTileIndex(tileType);
 
+      // Select the building sprite
       const uint8_t * buildingSprite = buildingSprites[tileIndex];
+      
+      // Select the building sprite mask
       const uint8_t * buildingMask = buildingMasks[tileIndex];
 
-      uint8_t thisTileHeight = getSpriteHeight(buildingSprite);
+      // Get the sprite's height
+      const uint8_t spriteHeight = getSpriteHeight(buildingSprite);
+
+      // Adjust the y position to account for the height of the sprite
+      const int16_t adjustedY = (drawY - (spriteHeight - tileHeight));
 
       // Draw the tile at the calculated position.
-      Sprites::drawExternalMask(drawX, drawY, buildingSprite, buildingMask, tileIndex, tileIndex);
-      //Sprites::drawOverwrite(drawX, drawY - (thisTileHeight - tileHeight), buildingSprite, 0);
-      //Sprites::drawSelfMasked(drawX, drawY - (thisTileHeight - tileHeight), buildingSprite, 0);
+      Sprites::drawExternalMask(drawX, adjustedY, buildingSprite, buildingMask, 0, 0);
     }
   }
 }
